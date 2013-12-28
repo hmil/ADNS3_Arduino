@@ -49,8 +49,8 @@ ADNS3::Motion ADNS3::readMotion() {
   writeByte(MOTION_REG);
   delayMicroseconds(READ_DELAY);
   motion.motion = readByte();
-  motion.deltaX = readByte();
   motion.deltaY = readByte();
+  motion.deltaX = readByte();
   motion.squal = readByte();
   motion.shutterUpper = readByte();
   motion.shutterLower = readByte();
