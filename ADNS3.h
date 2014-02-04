@@ -7,23 +7,26 @@
  * Allows you to control ADNS-3xxx optical mouse sensors over the SPI bus.
  * Be sure to include "SPI.h" in your sketch or it won't compile.
  *
- * Direct access to registers can be made with readRegister/writeRegister.
+ * INSTRUCTIONS:
  *
- * ReadMotion uses "burst" mode (MOTION_REGISTER)
+ * If you are using ADNS3030 or ADNS3040, it should work out of the box.
+ * Otherwithe, find your specific device's datasheet, and look for the "MOTION"
+ * register address. Use this value to define MOTION_REG below.
+ * Save the file, and try the example.
+ * If it doesn't work, make sure "burst mode" on your chip outputs "Motion,
+ * Delta_Y, and Delta_X, SQUAL, Shutter_Upper, and Shutter_Lower and Maximum_Pixel"
+ * in that order. If it doesn't, you can't use readMotion() unless you edit it yourself.
  *
- * This code works with ADNS3030/ADNS3040. Check register addresses in your
- * specific component's datasheet.
+ * But you can still use readRegister() to read "Motion" AND THEN "Delta_x" and "Delta_y"
+ * (These three registers sometimes MUST be read sequencially or it won't work).
 */
-
-
 
 #ifndef ADNS3_H
 #define ADNS3_H
-
   #include <SPI.h>
   #include <Arduino.h>
 
-  // /!\ you mau want to change this value according to the datasheet.
+  // You may want to change this value if you are not using ADNS3030/3040
   #define MOTION_REG  0x42
 
   #define READ_DELAY  75  // microseconds
@@ -46,13 +49,6 @@
       void writeRegister(byte reg, byte value);
 
       Motion readMotion();
-
-
-    private:
-      int m_ncsPin;
-      int m_misoPin;
-      int m_sclkPin;
-      int m_mosiPin;
   };
 
 #endif
